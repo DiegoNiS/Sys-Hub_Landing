@@ -1,0 +1,905 @@
+<!DOCTYPE html><html class="scroll-smooth dark" lang="es"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>SysHub — Soporte Técnico &amp; Académico de Estudiante a Estudiante</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef8ff',
+              100: '#d8efff',
+              200: '#b9e3fe',
+              400: '#38bdf8',
+              500: '#0284c7',
+              600: '#0369a1',
+              700: '#075985',
+              800: '#0c4a6e',
+              900: '#082f49'
+            },
+            accent: {
+              400: '#2dd4bf',
+              500: '#14b8a6',
+              600: '#0d9488'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Fira Code', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+    /* Animated Ambient Glowing Blobs & Aurora Waves */
+    @keyframes auroraFloat1 {
+      0%, 100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); opacity: 0.55; }
+      33% { transform: translate3d(50px, -60px, 0) scale(1.18) rotate(12deg); opacity: 0.75; }
+      66% { transform: translate3d(-40px, 40px, 0) scale(0.92) rotate(-8deg); opacity: 0.6; }
+    }
+    @keyframes auroraFloat2 {
+      0%, 100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); opacity: 0.5; }
+      40% { transform: translate3d(-70px, 50px, 0) scale(1.15) rotate(-15deg); opacity: 0.7; }
+      75% { transform: translate3d(45px, -35px, 0) scale(0.95) rotate(10deg); opacity: 0.55; }
+    }
+    @keyframes auroraFloat3 {
+      0%, 100% { transform: translate3d(0, 0, 0) scale(1.05); opacity: 0.45; }
+      50% { transform: translate3d(60px, -50px, 0) scale(1.22); opacity: 0.7; }
+    }
+    @keyframes dockGlow {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    @keyframes shimmerWave {
+      0% { transform: translateX(-150%) skewX(-20deg); }
+      100% { transform: translateX(250%) skewX(-20deg); }
+    }
+
+    .aurora-blob-1 {
+      animation: auroraFloat1 18s ease-in-out infinite alternate;
+      will-change: transform, opacity;
+    }
+    .aurora-blob-2 {
+      animation: auroraFloat2 22s ease-in-out infinite alternate;
+      will-change: transform, opacity;
+    }
+    .aurora-blob-3 {
+      animation: auroraFloat3 26s ease-in-out infinite alternate;
+      will-change: transform, opacity;
+    }
+
+    /* Island Navigation Dock Styling */
+    .island-dock-wrap {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.35), rgba(45, 212, 191, 0.15), rgba(99, 102, 241, 0.35));
+      background-size: 200% 200%;
+      animation: dockGlow 8s ease infinite;
+      box-shadow: 0 16px 40px -10px rgba(2, 132, 199, 0.22), 0 0 24px -4px rgba(20, 184, 166, 0.18);
+    }
+    .dark .island-dock-wrap {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(45, 212, 191, 0.1), rgba(129, 140, 248, 0.25));
+      box-shadow: 0 20px 48px -10px rgba(0, 0, 0, 0.7), 0 0 30px -4px rgba(14, 165, 233, 0.22);
+    }
+
+    .island-dock-inner {
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(24px) saturate(190%);
+      -webkit-backdrop-filter: blur(24px) saturate(190%);
+    }
+    .dark .island-dock-inner {
+      background: rgba(10, 17, 34, 0.82);
+      backdrop-filter: blur(24px) saturate(190%);
+      -webkit-backdrop-filter: blur(24px) saturate(190%);
+    }
+
+    /* Shimmer Effect for CTA Button */
+    .btn-shimmer {
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-shimmer::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+      animation: shimmerWave 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      pointer-events: none;
+    }
+
+    /* Glassmorphism Cards */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.65);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .dark .glass-card {
+      background: rgba(15, 23, 42, 0.68);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+    }
+
+    .glass-card-hover {
+      will-change: transform, box-shadow, border-color;
+    }
+    .glass-card-hover:hover {
+      transform: translateY(-8px) scale([1.008]);
+      border-color: rgba(56, 189, 248, 0.5);
+      box-shadow: 0 24px 50px -12px rgba(14, 165, 233, 0.22), 0 0 20px 2px rgba(45, 212, 191, 0.15);
+    }
+    .dark .glass-card-hover:hover {
+      border-color: rgba(56, 189, 248, 0.45);
+      box-shadow: 0 24px 50px -12px rgba(2, 132, 199, 0.35), 0 0 20px 2px rgba(45, 212, 191, 0.12);
+    }
+
+    /* Cybernetic Grid with Radial Vignette */
+    .bg-grid-cyber {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(148, 163, 184, 0.12) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(148, 163, 184, 0.12) 1px, transparent 1px);
+      mask-image: radial-gradient(ellipse at 50% 30%, black 40%, transparent 90%);
+      -webkit-mask-image: radial-gradient(ellipse at 50% 30%, black 40%, transparent 90%);
+    }
+    .dark .bg-grid-cyber {
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    }
+
+    /* Ripple Click Effect */
+    .ripple-active {
+      position: relative;
+      overflow: hidden;
+    }
+    .ripple-span {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.45);
+      transform: scale(0);
+      animation: rippleAnim 0.6s linear;
+      pointer-events: none;
+    }
+    @keyframes rippleAnim {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+
+    /* Tilt 3D Perspective container */
+    .tilt-frame {
+      perspective: 1200px;
+      transform-style: preserve-3d;
+      transition: transform 0.25s ease-out;
+    }
+    .tilt-inner {
+      transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-[#070b14] dark:text-slate-100 font-sans antialiased min-h-screen relative overflow-x-hidden transition-colors duration-300 selection:bg-sky-500 selection:text-white">
+<!-- ================= 0. CANVAS DINÁMICO DE MALLA CUÁNTICA & AURORA BLOBS ================= -->
+<div aria-hidden="true" class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+<!-- Interactive Neural / Quantum Network Particle Canvas -->
+<canvas class="absolute inset-0 w-full h-full opacity-65 dark:opacity-75" id="quantum-bg-canvas"></canvas>
+<!-- Cyber Grid Pattern Overlay -->
+<div class="absolute inset-0 bg-grid-cyber pointer-events-none"></div>
+<!-- Vivid Aurora Mesh Blobs -->
+<div class="aurora-blob-1 absolute -top-32 -left-20 w-[620px] h-[620px] rounded-full bg-gradient-to-tr from-cyan-400/35 via-sky-500/30 to-blue-600/25 blur-[125px] dark:from-cyan-500/25 dark:via-sky-600/20 dark:to-blue-700/30"></div>
+<div class="aurora-blob-2 absolute top-1/4 -right-28 w-[680px] h-[680px] rounded-full bg-gradient-to-br from-teal-400/30 via-emerald-400/20 to-indigo-600/30 blur-[135px] dark:from-teal-500/20 dark:via-emerald-600/15 dark:to-indigo-700/25"></div>
+<div class="aurora-blob-3 absolute -bottom-24 left-1/4 w-[750px] h-[750px] rounded-full bg-gradient-to-tr from-blue-600/25 via-indigo-500/25 to-teal-400/20 blur-[140px] dark:from-sky-700/20 dark:via-purple-900/25 dark:to-teal-700/20"></div>
+<div class="aurora-blob-2 absolute top-2/3 -left-32 w-[550px] h-[550px] rounded-full bg-gradient-to-r from-purple-500/20 to-sky-500/25 blur-[120px] dark:from-purple-900/25 dark:to-sky-700/20"></div>
+</div>
+<div class="relative z-10 flex flex-col min-h-screen">
+<!-- ================= 1. ISLAND NAVIGATION DOCK (NOVEDOSO Y RADICALMENTE ELEVADO) ================= -->
+<header class="fixed top-3 sm:top-5 left-0 right-0 z-50 px-3 sm:px-6 pointer-events-none">
+<div class="max-w-6xl mx-auto flex items-center justify-center">
+<nav class="island-dock-wrap pointer-events-auto p-[1px] rounded-full shadow-2xl transition-all duration-300 hover:scale-[1.008] w-full max-w-5xl">
+<div class="island-dock-inner rounded-full px-4 sm:px-6 py-2 flex items-center justify-between gap-4"><!-- Izquierda: SysHub Logo limpio y moderno -->
+<div class="flex items-center gap-3">
+  <a class="flex items-center gap-2.5 group" href="#">
+    <div class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-tr from-sky-500 to-teal-400 flex items-center justify-center text-white shadow-md shadow-sky-500/20 group-hover:scale-105 transition-transform duration-200">
+      <i class="w-4 h-4" data-lucide="activity"></i>
+      <span class="absolute top-0 right-0 w-2 h-2 rounded-full bg-emerald-400 border border-slate-900"></span>
+    </div>
+    <div class="flex items-baseline gap-1.5">
+      <span class="text-base sm:text-lg font-extrabold tracking-tight text-slate-900 dark:text-white font-mono leading-none">
+        Sys<span class="text-sky-500 dark:text-sky-400">Hub</span>
+      </span>
+      <span class="text-[9px] font-semibold text-slate-400 uppercase tracking-widest font-mono hidden sm:inline-block">UNSA</span>
+    </div>
+  </a>
+</div>
+
+<!-- Centro: Enlaces limpios, despejados y con sutil hover -->
+<div class="hidden md:flex items-center gap-6">
+  <a class="text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-sky-600 dark:hover:text-white transition-colors duration-150" href="#problemas">Servicios</a>
+  <a class="text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-sky-600 dark:hover:text-white transition-colors duration-150" href="#precios">Precios</a>
+  <a class="text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-sky-600 dark:hover:text-white transition-colors duration-150" href="#showcase">Comunidad</a>
+  <a class="text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-sky-600 dark:hover:text-white transition-colors duration-150" href="#contacto">Contacto</a>
+</div>
+
+<!-- Derecha: Toggle de tema y Botón WhatsApp compacto y sin desbordes -->
+<div class="flex items-center gap-2 sm:gap-3">
+  <button aria-label="Alternar modo oscuro" class="w-8 h-8 rounded-full flex items-center justify-center text-slate-600 dark:text-slate-300 bg-slate-100/80 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-700 border border-slate-200/80 dark:border-slate-700/80 transition-all duration-200 active:scale-95 group" id="theme-toggle" type="button">
+    <i class="w-4 h-4 hidden dark:block text-amber-300 transition-transform duration-200 group-hover:rotate-45" data-lucide="sun" id="theme-icon-sun"></i>
+    <i class="w-4 h-4 block dark:hidden text-slate-700 transition-transform duration-200 group-hover:-rotate-12" data-lucide="moon" id="theme-icon-moon"></i>
+    <span class="sr-only">Cambiar tema</span>
+  </button>
+  <a class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-500 shadow-sm shadow-emerald-600/30 active:scale-95 transition-all duration-200" href="https://wa.me/51912114252?text=Hola,%20soy%20estudiante%20UNSA%20y%20necesito%20asistencia%20t%C3%A9cnica/acad%C3%A9mica%20urgente" rel="noopener noreferrer" target="_blank">
+    <i class="w-3.5 h-3.5" data-lucide="message-circle"></i>
+    <span class="">WhatsApp</span>
+  </a>
+</div></div>
+</nav>
+</div>
+</header>
+<!-- Espaciador para el Dock Flotante -->
+<div class="h-24 sm:h-28"></div>
+<main class="flex-grow">
+<!-- ================= 2. HERO SECTION ================= -->
+<section class="relative px-4 sm:px-6 py-10 md:py-16 max-w-6xl mx-auto">
+<div class="text-center max-w-4xl mx-auto space-y-6">
+<!-- Badge status / identidad académica -->
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/25 backdrop-blur-md shadow-sm hover:border-sky-400/50 hover:bg-sky-500/15 transition-all cursor-default">
+<span class="flex h-2 w-2 relative">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-teal-500"></span>
+</span>
+<span class="">Estudiantes de Ingeniería de Sistemas de la UNSA apoyando a toda la comunidad agustina</span>
+</div>
+<!-- Título Principal (H1) -->
+<h1 class="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.15]">
+  Tu equipo, tu código y tus entregas, <br class="hidden sm:inline">
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-teal-300 to-indigo-400 filter drop-shadow-sm">
+    funcionando a tiempo.
+  </span>
+</h1>
+<!-- Subtítulo -->
+<p class="text-base sm:text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto font-normal leading-relaxed">
+  Soluciones técnicas rápidas, accesibles y profesionales para estudiantes de todas las facultades de la UNSA (Biomédicas, Ingenierías y Sociales). Mantenimiento de laptops, formateo de tesis en APA/Word/LaTeX, instalación de software y asesoría académica de compañero a compañero.
+</p>
+<!-- Botón de Acción Principal (CTA) & Garantías con Microinteracciones -->
+<div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+<a class="btn-shimmer w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl font-bold text-base bg-gradient-to-r from-sky-500 via-teal-500 to-sky-600 hover:from-sky-400 hover:via-teal-400 hover:to-sky-500 text-white shadow-xl shadow-sky-500/25 hover:shadow-sky-500/40 hover:-translate-y-1 active:translate-y-0 transition-all duration-200 group" href="#contacto">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="zap" aria-hidden="true" class="lucide lucide-zap w-5 h-5 text-amber-200 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-200"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"></path></svg>
+<span class="">Necesito ayuda urgente</span>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" aria-hidden="true" class="lucide lucide-arrow-right w-4 h-4 group-hover:translate-x-1 transition-transform duration-200"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+</a>
+<a class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl font-semibold text-base glass-card text-slate-700 dark:text-slate-200 hover:bg-white/90 dark:hover:bg-slate-800/90 hover:-translate-y-1 active:translate-y-0 transition-all duration-200 group" href="#problemas">
+<span class="">Ver servicios cubiertos</span>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-down" aria-hidden="true" class="lucide lucide-chevron-down w-4 h-4 group-hover:translate-y-0.5 transition-transform duration-200"><path d="m6 9 6 6 6-6"></path></svg>
+</a>
+</div>
+<!-- Feature Highlights en pills interactivas -->
+<div class="pt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto text-xs text-slate-600 dark:text-slate-300">
+<div class="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-white/60 dark:bg-slate-800/50 border border-slate-300/40 dark:border-slate-800/80 backdrop-blur-sm shadow-sm hover:border-teal-400/40 hover:bg-teal-500/5 transition-all">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="clock" aria-hidden="true" class="lucide lucide-clock w-3.5 h-3.5 text-teal-500"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
+<span class="font-medium">Respuesta Inmediata</span>
+</div>
+<div class="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-white/60 dark:bg-slate-800/50 border border-slate-300/40 dark:border-slate-800/80 backdrop-blur-sm shadow-sm hover:border-sky-400/40 hover:bg-sky-500/5 transition-all">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="shield-check" aria-hidden="true" class="lucide lucide-shield-check w-3.5 h-3.5 text-sky-500"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>
+<span class="font-medium">Criterio Técnico Real</span>
+</div>
+<div class="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-white/60 dark:bg-slate-800/50 border border-slate-300/40 dark:border-slate-800/80 backdrop-blur-sm shadow-sm hover:border-indigo-400/40 hover:bg-indigo-500/5 transition-all">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="heart-handshake" aria-hidden="true" class="lucide lucide-heart-handshake w-3.5 h-3.5 text-indigo-400"><path d="M19.414 14.414C21 12.828 22 11.5 22 9.5a5.5 5.5 0 0 0-9.591-3.676.6.6 0 0 1-.818.001A5.5 5.5 0 0 0 2 9.5c0 2.3 1.5 4 3 5.5l5.535 5.362a2 2 0 0 0 2.879.052 2.12 2.12 0 0 0-.004-3 2.124 2.124 0 1 0 3-3 2.124 2.124 0 0 0 3.004 0 2 2 0 0 0 0-2.828l-1.881-1.882a2.41 2.41 0 0 0-3.409 0l-1.71 1.71a2 2 0 0 1-2.828 0 2 2 0 0 1 0-2.828l2.823-2.762"></path></svg>
+<span class="font-medium">Trato Entre Pares</span>
+</div>
+<div class="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-white/60 dark:bg-slate-800/50 border border-slate-300/40 dark:border-slate-800/80 backdrop-blur-sm shadow-sm hover:border-emerald-400/40 hover:bg-emerald-500/5 transition-all">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="badge-dollar-sign" aria-hidden="true" class="lucide lucide-badge-dollar-sign w-3.5 h-3.5 text-emerald-500"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"></path><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><path d="M12 18V6"></path></svg>
+<span class="font-medium">Tarifas Universitarias</span>
+</div>
+</div>
+<!-- High-Fidelity Showcase Frame con Efecto Tilt 3D reactivo -->
+<div class="pt-10 max-w-5xl mx-auto tilt-frame" id="showcase">
+<div class="tilt-inner relative rounded-3xl overflow-hidden glass-card border border-white/70 dark:border-slate-700/70 shadow-2xl group hover:shadow-sky-500/20 hover:border-sky-500/40 transition-all duration-300" id="hero-tilt-card">
+<!-- Header Bar del Showcase Frame -->
+<div class="px-5 py-3.5 border-b border-slate-200/70 dark:border-slate-800/80 bg-slate-100/80 dark:bg-slate-900/85 flex items-center justify-between text-xs font-mono backdrop-blur-md">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-rose-500/80 inline-block shadow-sm"></span>
+<span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block shadow-sm"></span>
+<span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block shadow-sm"></span>
+<span class="text-slate-500 dark:text-slate-400 text-[11px] ml-2 hidden sm:inline">soporte-unsa // campus-san-agustin</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          Mesa de soporte tecnológico UNSA
+        </span>
+</div>
+</div>
+<!-- Imagen Real de Estudiantes de Sistemas en Laboratorio https://lh3.googleusercontent.com/aida/AEtjO1XzsZ1jJUcOmkDPP1-D1P8_Xh3unnWIoB6irlOd0lutPpNmAmgo3iQScXqrJO3FrMsPAnZZMvWCiiaMjwehdFCeKvkxkXAczfH7wyokfkwDYIU516ycIyrLolhGn6zdT6lrpLb0un79VB2SXoYK5q43m-4op1thCJWljf4ddqr9d7cPPT2cmw5h2DxXsA2v1lbJPnij1n8EwJDXtp9sabwdoSjqzbgsDMNhnRSQD6cpwAV15zYgsKzSvA -->
+<div class="relative w-full aspect-[16/9] md:aspect-[21/10] overflow-hidden bg-slate-950">
+<img alt="Showcase de tareas universitarias reales en la UNSA: tesis formateada en Word/APA con revisiones, diagnóstico y mantenimiento de hardware de laptop y herramientas de investigación" class="w-full h-full object-cover object-center group-hover:scale-[1.03] transition-transform duration-700 ease-out" loading="eager" src="https://lh3.googleusercontent.com/aida/AEtjO1XzsZ1jJUcOmkDPP1-D1P8_Xh3unnWIoB6irlOd0lutPpNmAmgo3iQScXqrJO3FrMsPAnZZMvWCiiaMjwehdFCeKvkxkXAczfH7wyokfkwDYIU516ycIyrLolhGn6zdT6lrpLb0un79VB2SXoYK5q43m-4op1thCJWljf4ddqr9d7cPPT2cmw5h2DxXsA2v1lbJPnij1n8EwJDXtp9sabwdoSjqzbgsDMNhnRSQD6cpwAV15zYgsKzSvA">
+<!-- Vignette suave e iluminación realista -->
+<div class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent pointer-events-none"></div>
+<!-- Overlay Badges y Tags Realistas -->
+<div class="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 flex flex-wrap items-center gap-2.5">
+<div class="backdrop-blur-md bg-slate-900/85 text-white text-xs sm:text-sm font-medium px-4 py-2 rounded-xl border border-white/20 shadow-lg flex items-center gap-2">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="map-pin" aria-hidden="true" class="lucide lucide-map-pin w-4 h-4 text-sky-400"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg>
+<span class="">Comunidad UNSA • Soporte presencial &amp; remoto</span>
+</div>
+<div class="hidden sm:inline-flex backdrop-blur-md bg-slate-900/80 text-slate-200 text-xs px-3.5 py-2 rounded-xl border border-white/10 items-center gap-1.5">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="users" aria-hidden="true" class="lucide lucide-users w-3.5 h-3.5 text-teal-400"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><path d="M16 3.128a4 4 0 0 1 0 7.744"></path><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></svg>
+<span class="">Compañeros de semestres superiores</span>
+</div>
+</div>
+<div class="absolute top-4 right-4 sm:top-5 sm:right-5 hidden sm:block">
+<div class="backdrop-blur-md bg-slate-900/80 border border-white/15 px-3.5 py-2 rounded-xl text-slate-200 text-xs font-mono flex items-center gap-2 shadow-lg">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check-circle-2" aria-hidden="true" class="lucide lucide-check-circle-2 w-3.5 h-3.5 text-emerald-400"><circle cx="12" cy="12" r="10"></circle><path d="m16 9-5.5 5.5L8 12"></path></svg>
+<span class="">Diagnóstico y Solución Inmediata</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ================= 3. SECCIÓN "LO QUE SOLUCIONAMOS" CON HOVERS 3D RICOS ================= -->
+<section class="px-4 sm:px-6 py-16 max-w-6xl mx-auto" id="problemas">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+<div>
+<div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400 font-mono mb-2">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="cpu" aria-hidden="true" class="lucide lucide-cpu w-4 h-4"><path d="M12 20v2"></path><path d="M12 2v2"></path><path d="M17 20v2"></path><path d="M17 2v2"></path><path d="M2 12h2"></path><path d="M2 17h2"></path><path d="M2 7h2"></path><path d="M20 12h2"></path><path d="M20 17h2"></path><path d="M20 7h2"></path><path d="M7 20v2"></path><path d="M7 2v2"></path><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="8" y="8" width="8" height="8" rx="1"></rect></svg>
+      Áreas de Especialidad
+    </div>
+<h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+      Lo que solucionamos
+    </h2>
+</div>
+<p class="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-md">
+    Sabemos exactamente qué problemas traban a los estudiantes en todas las carreras de la UNSA. Cada solución está pensada para salvar tu semestre sin complicaciones.
+  </p>
+</div>
+<!-- Grid Asimétrico con cards de diseño enriquecidas con fotografía tangible y hover 3D -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- 1. HARDWARE (Ancho 7 cols) con Fotografía Real https://lh3.googleusercontent.com/aida/AEtjO1XsafsnugSCkrbepy6cJeYGepRvipdIUjx0pS48FWgAG3pBNH6HWMLrmpRizFBB2o1kMEPYxquAK6AixP3NKU6ST5k2xRQkMgdzMdMq0HpCFFRAcKjbBNn5rPCe1fEBYeFS7MKKC7nCvm9MwBdTkEAowHlIa41CY6jBoOf4WtfV2fgTdMduJhJX_dJgw9EkDZaz2Aihll7Wkmq9xWZe7Iu8lNLBa16wEv2f2HBuQjNhYpuRg8mH0h1pgg -->
+<div class="md:col-span-7 glass-card glass-card-hover rounded-3xl overflow-hidden flex flex-col justify-between relative group border-t-2 border-t-sky-500/50">
+<div class="absolute -right-12 -bottom-12 w-48 h-48 bg-sky-500/10 dark:bg-sky-500/20 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500 pointer-events-none z-0"></div>
+<div class="relative w-full h-48 sm:h-56 overflow-hidden bg-slate-950">
+<img alt="Mantenimiento térmico de laptop en tapete antiestático con pasta térmica, destornilladores y disipador de cobre" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 ease-out" loading="lazy" src="https://lh3.googleusercontent.com/aida/AEtjO1XsafsnugSCkrbepy6cJeYGepRvipdIUjx0pS48FWgAG3pBNH6HWMLrmpRizFBB2o1kMEPYxquAK6AixP3NKU6ST5k2xRQkMgdzMdMq0HpCFFRAcKjbBNn5rPCe1fEBYeFS7MKKC7nCvm9MwBdTkEAowHlIa41CY6jBoOf4WtfV2fgTdMduJhJX_dJgw9EkDZaz2Aihll7Wkmq9xWZe7Iu8lNLBa16wEv2f2HBuQjNhYpuRg8mH0h1pgg">
+<div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent"></div>
+<div class="absolute top-4 left-4">
+<span class="px-3 py-1 text-xs font-mono font-semibold rounded-full bg-slate-900/85 text-blue-300 border border-blue-400/30 backdrop-blur-md inline-flex items-center gap-1.5 shadow">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="wrench" aria-hidden="true" class="lucide lucide-wrench w-3.5 h-3.5 text-blue-400"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"></path></svg>
+          01 // Hardware &amp; Mantenimiento
+        </span>
+</div>
+<div class="absolute bottom-3 left-4 right-4 flex items-center justify-between text-xs text-slate-300">
+<span class="font-mono text-[11px] bg-slate-900/80 backdrop-blur-sm px-2.5 py-1 rounded-lg border border-white/10">
+          Limpieza • Pasta térmica Artic-MX • SSD
+        </span>
+<span class="text-teal-300 text-[11px] font-semibold hidden sm:inline-flex items-center gap-1">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check" aria-hidden="true" class="lucide lucide-check w-3 h-3"><path d="M20 6 9 17l-5-5"></path></svg> Para todas las carreras
+        </span>
+</div>
+</div>
+<div class="p-6 sm:p-7 relative z-10 flex flex-col flex-grow justify-between">
+<div>
+<h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-sky-500 dark:group-hover:text-sky-400 transition-colors">
+          ¿Laptop lenta, se apaga o hierve de calor?
+        </h3>
+<p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
+          Limpieza profunda, cambio de pasta térmica de alto rendimiento, instalación de SSD y formateo completo para que vuele en tus clases, informes y exámenes.
+        </p>
+</div>
+<div class="pt-4 border-t border-slate-200/60 dark:border-slate-800/80 flex flex-wrap items-center gap-2.5 text-xs font-medium text-slate-500 dark:text-slate-400">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800/60"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check" aria-hidden="true" class="lucide lucide-check w-3.5 h-3.5 text-teal-500"><path d="M20 6 9 17l-5-5"></path></svg> Desarmado profesional seguro</span>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800/60"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check" aria-hidden="true" class="lucide lucide-check w-3.5 h-3.5 text-teal-500"><path d="M20 6 9 17l-5-5"></path></svg> Repotenciación RAM y Disco Sólido</span>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800/60"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check" aria-hidden="true" class="lucide lucide-check w-3.5 h-3.5 text-teal-500"><path d="M20 6 9 17l-5-5"></path></svg> Windows / Mac / Linux</span>
+</div>
+</div>
+</div>
+<!-- 2. TESIS Y FORMATOS (Ancho 5 cols) con Fotografía Real https://lh3.googleusercontent.com/aida/AEtjO1VWBjMdBdsCVcE_Ccp20uE2k6ok7YviYLRd8dPwzw3RcYYES9xvo0ZCMnA0GozjZkE87B3-Dn0gXsxlOZNS1FOkoqFVw_KF85XZdlJ086PBDtov4FFXMjwbLI2rFwn0jwPyYMkMz_k3KC51Z5Gq8Kb-phDWBCp1mOzfgv7Qv_lpbVs8TnShFXONXqcBzMkcPnVHDzipuFDTvToFsgxfKsezOIII_DUNyhJOT9FI4xCqNNXoUMLFz3ZKOg -->
+<div class="md:col-span-5 glass-card glass-card-hover rounded-3xl overflow-hidden flex flex-col justify-between relative group border-t-2 border-t-teal-500/50">
+<div class="absolute -right-10 -bottom-10 w-44 h-44 bg-teal-500/10 dark:bg-teal-500/20 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500 pointer-events-none z-0"></div>
+<div class="relative w-full h-48 sm:h-56 overflow-hidden bg-slate-950">
+<img alt="Formateo de artículos académicos, monografías y tesis con fórmulas y gráficos" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 ease-out" loading="lazy" src="https://lh3.googleusercontent.com/aida/AEtjO1VWBjMdBdsCVcE_Ccp20uE2k6ok7YviYLRd8dPwzw3RcYYES9xvo0ZCMnA0GozjZkE87B3-Dn0gXsxlOZNS1FOkoqFVw_KF85XZdlJ086PBDtov4FFXMjwbLI2rFwn0jwPyYMkMz_k3KC51Z5Gq8Kb-phDWBCp1mOzfgv7Qv_lpbVs8TnShFXONXqcBzMkcPnVHDzipuFDTvToFsgxfKsezOIII_DUNyhJOT9FI4xCqNNXoUMLFz3ZKOg">
+<div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent"></div>
+<div class="absolute top-4 left-4">
+<span class="px-3 py-1 text-xs font-mono font-semibold rounded-full bg-slate-900/85 text-teal-300 border border-teal-400/30 backdrop-blur-md inline-flex items-center gap-1.5 shadow">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="file-text" aria-hidden="true" class="lucide lucide-file-text w-3.5 h-3.5 text-teal-400"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"></path><path d="M14 2v5a1 1 0 0 0 1 1h5"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+          02 // Tesis, Monografías y Artículos
+        </span>
+</div>
+<div class="absolute bottom-3 left-4 right-4 flex items-center justify-between text-xs text-slate-300">
+<span class="font-mono text-[11px] bg-slate-900/80 backdrop-blur-sm px-2.5 py-1 rounded-lg border border-white/10">
+          Word • LaTeX • Normas UNSA
+        </span>
+</div>
+</div>
+<div class="p-6 sm:p-7 relative z-10 flex flex-col flex-grow justify-between">
+<div>
+<h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-teal-500 dark:group-hover:text-teal-400 transition-colors">
+          ¿El formato APA, IEEE o el índice te vuelven loco?
+        </h3>
+<p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
+          Maquetación express en Word y LaTeX. Corrección de saltos de sección, numeración correlativa, tablas, márgenes reglamentarios y citas bibliográficas para cualquier facultad agustina.
+        </p>
+</div>
+<div class="pt-4 border-t border-slate-200/60 dark:border-slate-800/80 flex flex-wrap items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400">
+<span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800/60"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check" aria-hidden="true" class="lucide lucide-check w-3.5 h-3.5 text-teal-500"><path d="M20 6 9 17l-5-5"></path></svg> APA 7ma / IEEE / Vancouver</span>
+<span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800/60"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check" aria-hidden="true" class="lucide lucide-check w-3.5 h-3.5 text-teal-500"><path d="M20 6 9 17l-5-5"></path></svg> Índices automáticos &amp; Figuras</span>
+<span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800/60"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check" aria-hidden="true" class="lucide lucide-check w-3.5 h-3.5 text-teal-500"><path d="M20 6 9 17l-5-5"></path></svg> Mendeley y Zotero</span>
+</div>
+</div>
+</div>
+<!-- 3. SOFTWARE ESPECIALIZADO Y ENTORNOS (Ancho 4 cols) con Fotografía https://lh3.googleusercontent.com/aida/AEtjO1WaB4tLtyJuX-ec3VzUf8QsKDD1NYXxIrwU_D3PL29Ex8sY2Fe9JoyK8SpuzmtODPp_JXWLHNqfGXvtZry0QRAM9nIcD_D_dXv7d44A_XPzEvEKkPsBd1Lz_QDf1SOFHh9jYMtBLSYhIEAfv17ngPjy5Fn-2_YsewVhkrRcRVITIq7OJ2CEQQWTh8buSHyFPs1K09j50oixd1JglI272ymFakM6KudxMKLi-w9lO-K5Rlnv1XslRMG1 -->
+<div class="md:col-span-4 glass-card glass-card-hover rounded-3xl overflow-hidden flex flex-col justify-between relative group border-t-2 border-purple-500/50">
+<div class="absolute -right-8 -bottom-8 w-40 h-40 bg-purple-500/10 dark:bg-purple-500/20 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500 pointer-events-none z-0"></div>
+<div class="relative w-full h-40 sm:h-44 overflow-hidden bg-slate-950">
+<img alt="Entorno de programación y terminal técnica para software y librerías" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 ease-out" loading="lazy" src="https://lh3.googleusercontent.com/aida/AEtjO1WaB4tLtyJuX-ec3VzUf8QsKDD1NYXxIrwU_D3PL29Ex8sY2Fe9JoyK8SpuzmtODPp_JXWLHNqfGXvtZry0QRAM9nIcD_D_dXv7d44A_XPzEvEKkPsBd1Lz_QDf1SOFHh9jYMtBLSYhIEAfv17ngPjy5Fn-2_YsewVhkrRcRVITIq7OJ2CEQQWTh8buSHyFPs1K09j50oixd1JglI272ymFakM6KudxMKLi-w9lO-K5Rlnv1XslRMG1">
+<div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent"></div>
+<div class="absolute top-3 left-3">
+<span class="px-2.5 py-1 text-xs font-mono font-semibold rounded-full bg-slate-900/85 text-purple-300 border border-purple-200 dark:border-purple-800 backdrop-blur-md inline-flex items-center gap-1.5 shadow">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="box" aria-hidden="true" class="lucide lucide-box w-3.5 h-3.5 text-purple-400"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg>
+          03 // Programas y Entornos
+        </span>
+</div>
+</div>
+<div class="p-6 sm:p-7 relative z-10 flex flex-col flex-grow justify-between">
+<div>
+<h3 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-purple-500 dark:group-hover:text-purple-400 transition-colors">
+          ¿No puedes instalar el programa que pide el docente?
+        </h3>
+<p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">
+          Instalación limpia y solución de errores en software especializado: SPSS, MATLAB, AutoCAD, Office 365, emuladores y paquetes estadísticos.
+        </p>
+</div>
+<div class="pt-4 border-t border-slate-200/60 dark:border-slate-800/80 flex flex-col gap-1.5 text-xs font-medium text-slate-500 dark:text-slate-400">
+<span class="inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check" aria-hidden="true" class="lucide lucide-check w-3.5 h-3.5 text-teal-500"><path d="M20 6 9 17l-5-5"></path></svg> Activación y resolución de licencias</span>
+<span class="inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check" aria-hidden="true" class="lucide lucide-check w-3.5 h-3.5 text-teal-500"><path d="M20 6 9 17l-5-5"></path></svg> SPSS, AutoCAD, MATLAB, Office</span>
+<span class="inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check" aria-hidden="true" class="lucide lucide-check w-3.5 h-3.5 text-teal-500"><path d="M20 6 9 17l-5-5"></path></svg> Máquinas virtuales y emuladores</span>
+</div>
+</div>
+</div>
+<!-- 4. ASESORÍA Y TUTORÍAS (Ancho 4 cols) con Fotografía Real https://lh3.googleusercontent.com/aida/AEtjO1U87OS4HoJiFpR-eVvQKvUUU4RFjLCD1_4CTxe9zZt3WoG0ADSaOTM8ibbt2jos6Tu8--bb9fwFx4z_xLK1w1Ht45eUmI0ZETcpBgfhe4J8h1PbMIoazfNOZ21QAq9TCXvdvXEqXTv8EOG-Q6kDWpwMJHQs6bFH-M3UC-L9Rx4_CWxv0cbzyRs5aUd0X6r_KpRuRqpJaipcCYzbJK7vKN63oTpQjsbiVABj6RUeEihOW4uVV2GBZemg_A -->
+<div class="md:col-span-4 glass-card glass-card-hover rounded-3xl overflow-hidden flex flex-col justify-between relative group border-t-2 border-rose-500/50">
+<div class="absolute -right-8 -bottom-8 w-40 h-40 bg-rose-500/10 dark:bg-rose-500/20 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500 pointer-events-none z-0"></div>
+<div class="relative w-full h-40 sm:h-44 overflow-hidden bg-slate-950">
+<img alt="Sesión de tutoría y depuración de código interactiva" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 ease-out" loading="lazy" src="https://lh3.googleusercontent.com/aida/AEtjO1U87OS4HoJiFpR-eVvQKvUUU4RFjLCD1_4CTxe9zZt3WoG0ADSaOTM8ibbt2jos6Tu8--bb9fwFx4z_xLK1w1Ht45eUmI0ZETcpBgfhe4J8h1PbMIoazfNOZ21QAq9TCXvdvXEqXTv8EOG-Q6kDWpwMJHQs6bFH-M3UC-L9Rx4_CWxv0cbzyRs5aUd0X6r_KpRuRqpJaipcCYzbJK7vKN63oTpQjsbiVABj6RUeEihOW4uVV2GBZemg_A">
+<div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent"></div>
+<div class="absolute top-3 left-3">
+<span class="px-2.5 py-1 text-xs font-mono font-semibold rounded-full bg-slate-900/85 text-rose-300 border border-rose-200 dark:border-rose-800 backdrop-blur-md inline-flex items-center gap-1.5 shadow">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="graduation-cap" aria-hidden="true" class="lucide lucide-graduation-cap w-3.5 h-3.5 text-rose-400"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"></path><path d="M22 10v6"></path><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"></path></svg>
+          04 // Tutorías &amp; Nivelación
+        </span>
+</div>
+</div>
+<div class="p-6 sm:p-7 relative z-10 flex flex-col flex-grow justify-between">
+<div>
+<h3 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-rose-500 dark:group-hover:text-rose-400 transition-colors">
+          ¿Atorado con laboratorios o cursos técnicos?
+        </h3>
+<p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">
+          Asesorías prácticas 1 a 1 para destrabar proyectos de programación básica o avanzada, algoritmos, bases de datos y cálculo numérico.
+        </p>
+</div>
+<div class="pt-4 border-t border-slate-200/60 dark:border-slate-800/80 flex flex-col gap-1.5 text-xs font-medium text-slate-500 dark:text-slate-400">
+<span class="inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check" aria-hidden="true" class="lucide lucide-check w-3.5 h-3.5 text-teal-500"><path d="M20 6 9 17l-5-5"></path></svg> Explicación didáctica paso a paso</span>
+<span class="inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check" aria-hidden="true" class="lucide lucide-check w-3.5 h-3.5 text-teal-500"><path d="M20 6 9 17l-5-5"></path></svg> Python, Java, C++, SQL, pseudocódigo</span>
+</div>
+</div>
+</div>
+<!-- 5. AUTOMATIZACIÓN Y ARCHIVOS (Ancho 4 cols) -->
+<div class="md:col-span-4 glass-card glass-card-hover rounded-3xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden group border-t-2 border-emerald-500/50">
+<div class="absolute -right-8 -bottom-8 w-40 h-40 bg-emerald-500/10 dark:bg-emerald-500/20 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500 pointer-events-none"></div>
+<div>
+<div class="flex items-center justify-between mb-5">
+<span class="px-3 py-1 text-xs font-mono font-semibold rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+          05 // Automatización
+        </span>
+<div class="w-10 h-10 rounded-2xl bg-emerald-500/10 dark:bg-emerald-400/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center group-hover:scale-110 group-hover:rotate-12 transition-transform">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sparkles" aria-hidden="true" class="lucide lucide-sparkles w-5 h-5"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+</div>
+</div>
+<h3 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors">
+        ¿Horas copiando datos o limpiando archivos?
+      </h3>
+<p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">
+        Procesamiento veloz de Excel, unificación de cientos de PDFs, conversión masiva de formatos y ordenamiento de encuestas para tus tesis o trabajos de campo.
+      </p>
+</div>
+<div class="pt-4 border-t border-slate-200/60 dark:border-slate-800/80 flex flex-col gap-1.5 text-xs font-medium text-slate-500 dark:text-slate-400">
+<span class="inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check" aria-hidden="true" class="lucide lucide-check w-3.5 h-3.5 text-teal-500"><path d="M20 6 9 17l-5-5"></path></svg> Limpieza y macros de Excel / CSV</span>
+<span class="inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check" aria-hidden="true" class="lucide lucide-check w-3.5 h-3.5 text-teal-500"><path d="M20 6 9 17l-5-5"></path></svg> Extracción y consolidación de PDFs</span>
+</div>
+</div>
+</div>
+</section>
+<!-- ================= 4. SECCIÓN "NUESTROS PRECIOS" ================= -->
+<section class="px-4 sm:px-6 py-16 max-w-6xl mx-auto" id="precios">
+<div class="glass-card rounded-3xl p-8 sm:p-12 relative overflow-hidden border-sky-500/35 dark:border-sky-500/30 shadow-2xl hover:shadow-sky-500/15 transition-all duration-300">
+<!-- Decoración visual interior -->
+<div class="absolute top-0 right-0 w-80 h-80 bg-gradient-to-bl from-teal-400/20 via-sky-500/15 to-transparent rounded-full blur-3xl pointer-events-none"></div>
+<div class="max-w-3xl mx-auto text-center space-y-6 relative z-10">
+<div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="coins" aria-hidden="true" class="lucide lucide-coins w-4 h-4"><path d="M13.744 17.736a6 6 0 1 1-7.48-7.48"></path><path d="M15 6h1v4"></path><path d="m6.134 14.768.866-.5 2 3.464"></path><circle cx="16" cy="8" r="6"></circle></svg>
+      Filosofía Comunitaria &amp; Accesible
+    </div>
+<h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+      Nuestros Precios
+    </h2>
+<!-- Texto empático obligatorio verbatim con alto valor de diseño -->
+<div class="p-6 sm:p-8 rounded-2xl bg-white/70 dark:bg-slate-900/70 border border-slate-200/80 dark:border-slate-800 text-slate-700 dark:text-slate-200 text-base sm:text-lg leading-relaxed shadow-sm hover:border-sky-400/40 transition-colors">
+<blockquote class="italic font-medium">“Manejamos tarifas de estudiante a estudiante agustino. Sabemos lo difícil que es fin de semestre en la UNSA, entre entregas y exámenes. Nuestros precios son transparentes y conversables: cuéntanos qué necesitas y siempre encontramos un punto justo para ayudarte a aprobar y cumplir tus metas.”</blockquote>
+</div>
+<!-- Principios de trato -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 text-left">
+<div class="p-5 rounded-2xl bg-white/50 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/60 hover:-translate-y-1 hover:border-sky-400/50 transition-all duration-200 shadow-sm">
+<div class="flex items-center gap-2 font-semibold text-slate-900 dark:text-white text-sm mb-1.5">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="message-square" aria-hidden="true" class="lucide lucide-message-square w-4 h-4 text-sky-500"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"></path></svg>
+          Diagnóstico Previo
+        </div>
+<p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+          Te decimos con honestidad qué requiere tu problema antes de acordar cualquier costo.
+        </p>
+</div>
+<div class="p-5 rounded-2xl bg-white/50 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/60 hover:-translate-y-1 hover:border-teal-400/50 transition-all duration-200 shadow-sm">
+<div class="flex items-center gap-2 font-semibold text-slate-900 dark:text-white text-sm mb-1.5">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="scale" aria-hidden="true" class="lucide lucide-scale w-4 h-4 text-teal-500"><path d="M12 3v18"></path><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"></path><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"></path><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"></path><path d="M7 21h10"></path></svg>
+          Punto Medio Justo
+        </div>
+<p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+          Presupuestos proporcionales a la complejidad y a la realidad universitaria.
+        </p>
+</div>
+<div class="p-5 rounded-2xl bg-white/50 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/60 hover:-translate-y-1 hover:border-emerald-400/50 transition-all duration-200 shadow-sm">
+<div class="flex items-center gap-2 font-semibold text-slate-900 dark:text-white text-sm mb-1.5">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check-circle" aria-hidden="true" class="lucide lucide-check-circle w-4 h-4 text-emerald-500"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>
+          Garantía de Solución
+        </div>
+<p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+          Si no podemos solucionar o destrabar tu inconveniente, no te cobramos.
+        </p>
+</div>
+</div>
+<!-- Botón hacia contacto -->
+<div class="pt-4">
+<a class="inline-flex items-center gap-2 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 transition-colors group px-4 py-2 rounded-full hover:bg-sky-500/10" href="#contacto">
+<span class="">Hablemos de tu caso específico sin compromiso</span>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" aria-hidden="true" class="lucide lucide-arrow-right w-4 h-4 group-hover:translate-x-1.5 transition-transform"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</section>
+<!-- ================= 5. SECCIÓN "CONTACTO DIRECTO" CON BOTONES RIPPLE & WHATSAPP ================= -->
+<section class="px-4 sm:px-6 py-16 max-w-6xl mx-auto" id="contacto">
+<div class="text-center max-w-2xl mx-auto mb-12">
+<div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-teal-600 dark:text-teal-400 font-mono mb-2">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="message-circle" aria-hidden="true" class="lucide lucide-message-circle w-4 h-4"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"></path></svg>
+    Canales de WhatsApp Inmediatos
+  </div>
+<h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+    Contacto Directo
+  </h2>
+<p class="text-sm sm:text-base text-slate-600 dark:text-slate-400 mt-2">
+    Elige el canal según tu necesidad. Atendemos a compañeros de todas las carreras y sedes de la UNSA con la urgencia que tu ciclo académico amerita:
+  </p>
+</div>
+<!-- 4 Tarjetas de Contacto / Botones WhatsApp Específicos -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Tarjeta 1: Hardware -->
+<div class="glass-card glass-card-hover rounded-3xl p-6 flex flex-col justify-between border-t-4 border-t-blue-500 relative group">
+<div>
+<div class="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-transform">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="cpu" aria-hidden="true" class="lucide lucide-cpu w-6 h-6"><path d="M12 20v2"></path><path d="M12 2v2"></path><path d="M17 20v2"></path><path d="M17 2v2"></path><path d="M2 12h2"></path><path d="M2 17h2"></path><path d="M2 7h2"></path><path d="M20 12h2"></path><path d="M20 17h2"></path><path d="M20 7h2"></path><path d="M7 20v2"></path><path d="M7 2v2"></path><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="8" y="8" width="8" height="8" rx="1"></rect></svg>
+</div>
+<span class="text-[11px] font-mono uppercase tracking-wider text-slate-400 dark:text-slate-500 font-semibold block mb-1">
+        Canal 01
+      </span>
+<h3 class="text-base font-bold text-slate-900 dark:text-white mb-2 leading-snug">
+        Mantenimiento de Laptops y PC
+      </h3>
+<p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+        Laptops sobrecalentadas, lentitud extrema, pasta térmica, instalación de SSD y formateo para cualquier modelo.
+      </p>
+</div>
+<a class="ripple-active w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-semibold text-xs text-white bg-emerald-600 hover:bg-emerald-500 active:scale-95 shadow-md shadow-emerald-600/25 hover:shadow-lg hover:shadow-emerald-500/35 hover:-translate-y-0.5 transition-all cursor-pointer" href="https://wa.me/51912114252?text=Hola,%20soy%20estudiante%20de%20la%20UNSA%20y%20necesito%20mantenimiento/reparaci%C3%B3n%20para%20mi%20laptop" rel="noopener noreferrer" target="_blank">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="message-circle" aria-hidden="true" class="lucide lucide-message-circle w-4 h-4"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"></path></svg>
+<span class="">Abrir WhatsApp</span>
+</a>
+</div>
+<!-- Tarjeta 2: Software y Entornos -->
+<div class="glass-card glass-card-hover rounded-3xl p-6 flex flex-col justify-between border-t-4 border-t-teal-500 relative group">
+<div>
+<div class="w-12 h-12 rounded-2xl bg-teal-500/10 text-teal-600 dark:text-teal-400 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-transform">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="layers" aria-hidden="true" class="lucide lucide-layers w-6 h-6"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"></path><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"></path><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"></path></svg>
+</div>
+<span class="text-[11px] font-mono uppercase tracking-wider text-slate-400 dark:text-slate-500 font-semibold block mb-1">
+        Canal 02
+      </span>
+<h3 class="text-base font-bold text-slate-900 dark:text-white mb-2 leading-snug">
+        Instalación de Programas y Software
+      </h3>
+<p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+        SPSS, MATLAB, Office, AutoCAD, drivers, librerías, emuladores y configuración de entornos de estudio.
+      </p>
+</div>
+<a class="ripple-active w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-semibold text-xs text-white bg-emerald-600 hover:bg-emerald-500 active:scale-95 shadow-md shadow-emerald-600/25 hover:shadow-lg hover:shadow-emerald-500/35 hover:-translate-y-0.5 transition-all cursor-pointer" href="https://wa.me/51912522377?text=Hola,%20soy%20de%20la%20UNSA%20y%20tengo%20problemas%20para%20instalar%20un%20programa%20para%20mis%20clases" rel="noopener noreferrer" target="_blank">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="message-circle" aria-hidden="true" class="lucide lucide-message-circle w-4 h-4"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"></path></svg>
+<span class="">Abrir WhatsApp</span>
+</a>
+</div>
+<!-- Tarjeta 3: Tutorías y Ayuda Académica -->
+<div class="glass-card glass-card-hover rounded-3xl p-6 flex flex-col justify-between border-t-4 border-t-indigo-500 relative group">
+<div>
+<div class="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-transform">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="graduation-cap" aria-hidden="true" class="lucide lucide-graduation-cap w-6 h-6"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"></path><path d="M22 10v6"></path><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"></path></svg>
+</div>
+<span class="text-[11px] font-mono uppercase tracking-wider text-slate-400 dark:text-slate-500 font-semibold block mb-1">
+        Canal 03
+      </span>
+<h3 class="text-base font-bold text-slate-900 dark:text-white mb-2 leading-snug">
+        Tesis, Formatos APA/IEEE y Tutorías
+      </h3>
+<p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+        Maquetación de tesis y monografías en Word o LaTeX, bibliografía, asesoría en laboratorios y nivelación 1 a 1.
+      </p>
+</div>
+<a class="ripple-active w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-semibold text-xs text-white bg-emerald-600 hover:bg-emerald-500 active:scale-95 shadow-md shadow-emerald-600/25 hover:shadow-lg hover:shadow-emerald-500/35 hover:-translate-y-0.5 transition-all cursor-pointer" href="https://wa.me/51960335622?text=Hola,%20soy%20estudiante%20UNSA%20y%20necesito%20ayuda%20con%20el%20formato%20de%20mi%20tesis/trabajo%20o%20tutor%C3%ADa" rel="noopener noreferrer" target="_blank">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="message-circle" aria-hidden="true" class="lucide lucide-message-circle w-4 h-4"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"></path></svg>
+<span class="">Abrir WhatsApp</span>
+</a>
+</div>
+<!-- Tarjeta 4: Consultas Generales -->
+<div class="glass-card glass-card-hover rounded-3xl p-6 flex flex-col justify-between border-t-4 border-t-amber-500 relative group">
+<div>
+<div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-transform">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="terminal-square" aria-hidden="true" class="lucide lucide-terminal-square w-6 h-6"><path d="m7 11 2-2-2-2"></path><path d="M11 13h4"></path><rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect></svg>
+</div>
+<span class="text-[11px] font-mono uppercase tracking-wider text-slate-400 dark:text-slate-500 font-semibold block mb-1">
+        Canal 04
+      </span>
+<h3 class="text-base font-bold text-slate-900 dark:text-white mb-2 leading-snug">
+        Consultas Generales y Urgencias
+      </h3>
+<p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+        Automatizaciones de datos, macros en Excel, PDFs pesados o cualquier urgencia técnica antes de tu entrega.
+      </p>
+</div>
+<a class="ripple-active w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-semibold text-xs text-white bg-emerald-600 hover:bg-emerald-500 active:scale-95 shadow-md shadow-emerald-600/25 hover:shadow-lg hover:shadow-emerald-500/35 hover:-translate-y-0.5 transition-all cursor-pointer" href="https://wa.me/51925094397?text=Hola,%20soy%20de%20la%20UNSA%20y%20tengo%20una%20urgencia%20t%C3%A9cnica%20con%20mi%20entrega" rel="noopener noreferrer" target="_blank">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="message-circle" aria-hidden="true" class="lucide lucide-message-circle w-4 h-4"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"></path></svg>
+<span class="">Abrir WhatsApp</span>
+</a>
+</div>
+</div>
+<!-- Banner de confianza & tiempo de respuesta -->
+<div class="mt-10 p-4 rounded-2xl bg-white/60 dark:bg-slate-900/40 border border-slate-300/40 dark:border-slate-800 text-center text-xs text-slate-600 dark:text-slate-400 flex flex-wrap items-center justify-center gap-6 shadow-sm">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+<span class="">Canales activos todos los días de semana y fechas de parciales</span>
+</div>
+<div class="flex items-center gap-2">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="lock" aria-hidden="true" class="lucide lucide-lock w-3.5 h-3.5 text-slate-400"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+<span class="">Privacidad de código y datos garantizada</span>
+</div>
+</div>
+</section>
+</main>
+<!-- ================= FOOTER ================= -->
+<footer class="border-t border-slate-200/60 dark:border-slate-800/80 bg-white/50 dark:bg-slate-950/60 backdrop-blur-md py-8 px-4 sm:px-6 mt-16 text-xs text-slate-500 dark:text-slate-400">
+<div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-2 font-mono flex-wrap justify-center sm:justify-start">
+<span class="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-teal-400"></span> SysHub
+    </span>
+<span class="">© <span id="current-year" class="">2026</span></span>
+<span class="">•</span>
+<span class="">SysHub • Estudiantes de Ingeniería de Sistemas de la UNSA para toda la comunidad agustina</span>
+</div>
+<div class="flex items-center gap-5">
+<a class="hover:text-sky-500 transition-colors" href="#problemas">Problemas</a>
+<a class="hover:text-sky-500 transition-colors" href="#precios">Precios</a>
+<a class="hover:text-sky-500 transition-colors" href="#contacto">Contacto</a>
+<a class="hover:text-sky-500 transition-colors" href="#">Volver arriba ↑</a>
+</div>
+</div>
+</footer>
+</div>
+<!-- ================= LOGIC & INTERACTIVITY (Vanilla JS) ================= -->
+<script>
+    // 1. Iniciar Lucide Icons
+    lucide.createIcons();
+
+    // 2. Año actual dinámico
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    // 3. Dark Mode / Light Mode Toggle con persistencia local y soporte sincronizado
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const htmlElement = document.documentElement;
+
+    const savedTheme = localStorage.getItem('syshub-theme');
+    if (savedTheme) {
+      if (savedTheme === 'dark') {
+        htmlElement.classList.add('dark');
+      } else {
+        htmlElement.classList.remove('dark');
+      }
+    } else {
+      htmlElement.classList.add('dark');
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+      const isDark = htmlElement.classList.toggle('dark');
+      localStorage.setItem('syshub-theme', isDark ? 'dark' : 'light');
+    });
+
+    // 4. Smooth scroll con corrección de offset para el Island Dock
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        const targetEl = document.querySelector(targetId);
+        if (targetEl) {
+          e.preventDefault();
+          const dockOffset = 90;
+          const targetPosition = targetEl.getBoundingClientRect().top + window.pageYOffset - dockOffset;
+          window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // 5. Canvas de Partículas de Red Neuronal / Malla Cuántica Interactiva a 60 FPS
+    (function initQuantumCanvas() {
+      const canvas = document.getElementById('quantum-bg-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width = canvas.width = window.innerWidth;
+      let height = canvas.height = window.innerHeight;
+
+      let particles = [];
+      const particleCount = Math.min(Math.floor((width * height) / 22000), 55);
+      const mouse = { x: null, y: null, maxDist: 140 };
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      });
+
+      window.addEventListener('mouseleave', () => {
+        mouse.x = null;
+        mouse.y = null;
+      });
+
+      class Particle {
+        constructor() {
+          this.x = Math.random() * width;
+          this.y = Math.random() * height;
+          this.vx = (Math.random() - 0.5) * 0.45;
+          this.vy = (Math.random() - 0.5) * 0.45;
+          this.radius = Math.random() * 1.6 + 0.8;
+        }
+
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+
+          if (this.x < 0 || this.x > width) this.vx *= -1;
+          if (this.y < 0 || this.y > height) this.vy *= -1;
+
+          // React to mouse proximity gently
+          if (mouse.x !== null && mouse.y !== null) {
+            const dx = mouse.x - this.x;
+            const dy = mouse.y - this.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < mouse.maxDist) {
+              const force = (mouse.maxDist - dist) / mouse.maxDist;
+              this.x -= (dx / dist) * force * 1.2;
+              this.y -= (dy / dist) * force * 1.2;
+            }
+          }
+        }
+
+        draw() {
+          const isDark = document.documentElement.classList.contains('dark');
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fillStyle = isDark ? 'rgba(56, 189, 248, 0.65)' : 'rgba(2, 132, 199, 0.45)';
+          ctx.fill();
+        }
+      }
+
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        const isDark = document.documentElement.classList.contains('dark');
+        const lineColor = isDark ? 'rgba(56, 189, 248, ' : 'rgba(14, 165, 233, ';
+
+        for (let i = 0; i < particles.length; i++) {
+          particles[i].update();
+          particles[i].draw();
+
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < 110) {
+              const alpha = (1 - distance / 110) * 0.22;
+              ctx.strokeStyle = lineColor + alpha + ')';
+              ctx.lineWidth = 0.8;
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+
+    // 6. Showcase Hero Tilt 3D sutil reactivo al movimiento del cursor
+    (function initTiltShowcase() {
+      const tiltCard = document.getElementById('hero-tilt-card');
+      if (!tiltCard) return;
+
+      tiltCard.addEventListener('mousemove', (e) => {
+        const rect = tiltCard.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -4;
+        const rotateY = ((x - centerX) / centerX) * 4;
+
+        tiltCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
+      });
+
+      tiltCard.addEventListener('mouseleave', () => {
+        tiltCard.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+      });
+    })();
+
+    // 7. Ripple Effect en Botones de WhatsApp
+    document.querySelectorAll('.ripple-active').forEach(button => {
+      button.addEventListener('click', function (e) {
+        const rect = this.getBoundingClientRect();
+        const circle = document.createElement('span');
+        const diameter = Math.max(rect.width, rect.height);
+        const radius = diameter / 2;
+
+        circle.style.width = circle.style.height = `${diameter}px`;
+        circle.style.left = `${e.clientX - rect.left - radius}px`;
+        circle.style.top = `${e.clientY - rect.top - radius}px`;
+        circle.classList.add('ripple-span');
+
+        const ripple = this.querySelector('.ripple-span');
+        if (ripple) {
+          ripple.remove();
+        }
+        this.appendChild(circle);
+      });
+    });
+  </script>
+
+
+</body></html>
